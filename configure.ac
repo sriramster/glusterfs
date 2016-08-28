@@ -188,6 +188,9 @@ AC_CONFIG_FILES([Makefile
                 xlators/nfs/Makefile
                 xlators/nfs/server/Makefile
                 xlators/nfs/server/src/Makefile
+                xlators/mgmt/glusterd/plugins/Makefile
+                xlators/mgmt/glusterd/plugins/snapshot/Makefile
+                xlators/mgmt/glusterd/plugins/snapshot/src/Makefile
                 xlators/mgmt/Makefile
                 xlators/mgmt/glusterd/Makefile
                 xlators/mgmt/glusterd/src/Makefile
@@ -1385,11 +1388,13 @@ AC_SUBST(LIBGFDB_VERSION)
 dnl libtool versioning
 LIBGFXDR_LT_VERSION="0:1:0"
 LIBGFRPC_LT_VERSION="0:1:0"
+LIBGSNAPS_LT_VERSION="0:1:0"
 LIBGLUSTERFS_LT_VERSION="0:1:0"
 LIBGFCHANGELOG_LT_VERSION="0:1:0"
 GFAPI_LT_VERSION="0:0:0"
 AC_SUBST(LIBGFXDR_LT_VERSION)
 AC_SUBST(LIBGFRPC_LT_VERSION)
+AC_SUBST(LIBGSNAPS_LT_VERSION)
 AC_SUBST(LIBGLUSTERFS_LT_VERSION)
 AC_SUBST(LIBGFCHANGELOG_LT_VERSION)
 AC_SUBST(GFAPI_LT_VERSION)

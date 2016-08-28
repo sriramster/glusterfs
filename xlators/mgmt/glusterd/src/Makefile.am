@@ -22,6 +22,7 @@ glusterd_la_SOURCES = glusterd.c glusterd-handler.c glusterd-sm.c \
 glusterd_la_LIBADD = $(top_builddir)/libglusterfs/src/libglusterfs.la \
 		     $(top_builddir)/rpc/xdr/src/libgfxdr.la \
 		     $(top_builddir)/rpc/rpc-lib/src/libgfrpc.la \
+                     $(top_builddir)/xlators/mgmt/glusterd/plugins/snapshot/src/libgsnaps.la \
 		     $(XML_LIBS) -lcrypto $(URCU_LIBS) $(URCU_CDS_LIBS)
 if ENABLE_BD_XLATOR
 glusterd_la_LIBADD += -llvm2app
@@ -45,6 +46,7 @@ AM_CPPFLAGS = $(GF_CPPFLAGS) -I$(top_srcdir)/libglusterfs/src \
 	-I$(top_srcdir)/rpc/xdr/src -I$(top_srcdir)/rpc/rpc-lib/src \
 	-I$(CONTRIBDIR)/mount \
 	-I$(CONTRIBDIR)/userspace-rcu \
+	-I$(top_srcdir)/xlators/mgmt/glusterd/plugins/snapshot/src/ \
 	-DSBIN_DIR=\"$(sbindir)\" -DDATADIR=\"$(localstatedir)\" \
 	-DGSYNCD_PREFIX=\"$(libexecdir)/glusterfs\" \
 	-DCONFDIR=\"$(sysconfdir)/ganesha\" \

@@ -1,3 +1,3 @@
-SUBDIRS = src
+SUBDIRS = plugins src
 
 CLEANFILES = 
