@@ -592,10 +592,6 @@ glusterd_get_brick_mount_dir (char *brickpath, char *hostname, char *mount_dir);
 int32_t
 glusterd_aggr_brick_mount_dirs (dict_t *aggr, dict_t *rsp_dict);
 
-int32_t
-glusterd_take_lvm_snapshot (glusterd_brickinfo_t *brickinfo,
-                            char *origin_brick_path);
-
 void
 glusterd_launch_synctask (synctask_fn_t fn, void *opaque);
 

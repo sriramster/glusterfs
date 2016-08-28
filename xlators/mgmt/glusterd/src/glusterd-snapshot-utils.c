@@ -30,6 +30,7 @@
 #include "glusterd-server-quorum.h"
 #include "glusterd-messages.h"
 #include "glusterd-errno.h"
+#include "lvm_snaps.h"
 
 /*
  *  glusterd_snap_geo_rep_restore:
@@ -2653,66 +2654,6 @@ mntopts_exists (const char *str, const char *opts)
 out:
         GF_FREE (dup_val);
         return exists;
-}
-
-int32_t
-glusterd_mount_lvm_snapshot (glusterd_brickinfo_t *brickinfo,
-                             char *brick_mount_path)
-{
-        char               msg[NAME_MAX]  = "";
-        char               mnt_opts[1024] = "";
-        int32_t            ret            = -1;
-        runner_t           runner         = {0, };
-        xlator_t          *this           = NULL;
-
-        this = THIS;
-        GF_ASSERT (this);
-        GF_ASSERT (brick_mount_path);
-        GF_ASSERT (brickinfo);
-
-
-        runinit (&runner);
-        snprintf (msg, sizeof (msg), "mount %s %s",
-                  brickinfo->device_path, brick_mount_path);
-
-        strcpy (mnt_opts, brickinfo->mnt_opts);
-
-        /* XFS file-system does not allow to mount file-system with duplicate
-         * UUID. File-system UUID of snapshot and its origin volume is same.
-         * Therefore to mount such a snapshot in XFS we need to pass nouuid
-         * option
-         */
-        if (!strcmp (brickinfo->fstype, "xfs") &&
-            !mntopts_exists (mnt_opts, "nouuid")) {
-                if (strlen (mnt_opts) > 0)
-                        strcat (mnt_opts, ",");
-                strcat (mnt_opts, "nouuid");
-        }
-
-
-        if (strlen (mnt_opts) > 0) {
-                runner_add_args (&runner, "mount", "-o", mnt_opts,
-                                brickinfo->device_path, brick_mount_path, NULL);
-        } else {
-                runner_add_args (&runner, "mount", brickinfo->device_path,
-                                 brick_mount_path, NULL);
-        }
-
-        runner_log (&runner, this->name, GF_LOG_DEBUG, msg);
-        ret = runner_run (&runner);
-        if (ret) {
-                gf_msg (this->name, GF_LOG_ERROR, 0,
-                        GD_MSG_SNAP_MOUNT_FAIL, "mounting the snapshot "
-                        "logical device %s failed (error: %s)",
-                        brickinfo->device_path, strerror (errno));
-                goto out;
-        } else
-                gf_msg_debug (this->name, 0, "mounting the snapshot "
-                        "logical device %s successful", brickinfo->device_path);
-
-out:
-        gf_msg_trace (this->name, 0, "Returning with %d", ret);
-        return ret;
 }
 
 gf_boolean_t

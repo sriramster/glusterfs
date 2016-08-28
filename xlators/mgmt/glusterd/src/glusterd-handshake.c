@@ -28,6 +28,7 @@
 #include "protocol-common.h"
 #include "rpcsvc.h"
 #include "rpc-common-xdr.h"
+#include "lvm_snaps.h"
 
 extern struct rpc_clnt_program gd_peer_prog;
 extern struct rpc_clnt_program gd_mgmt_prog;
@@ -588,7 +589,30 @@ glusterd_create_missed_snap (glusterd_missed_snap_info *missed_snapinfo,
                  * the file-system type */
         }
 
-        ret = glusterd_take_lvm_snapshot (brickinfo, snap_opinfo->brick_path);
+#if 0
+        char                   *origin_brick_path   = NULL;
+
+	ret = dict_get_str (dict, key, &origin_brick_path);
+        if (ret) {
+	     gf_msg (this->name, GF_LOG_WARNING, 0,
+		     GD_MSG_DICT_GET_FAILED, "Unable to fetch "
+		     "brick path (%s)", key);
+	     goto out;
+        }
+
+	char *origin_device = NULL;
+	origin_device = glusterd_get_brick_mount_device (origin_brick_path);
+        if (!origin_device) {
+	     gf_msg (this->name, GF_LOG_ERROR, 0,
+		     GD_MSG_BRICK_GET_INFO_FAIL, "getting device name for "
+		     "the brick %s failed", origin_brick_path);
+	     goto out;
+        }
+	else {
+	     ret = glusterd_take_lvm_snapshot (brickinfo->device_path, origin_brick_path, origin_device);
+	}
+#endif
+
         if (ret) {
                 gf_msg (this->name, GF_LOG_ERROR, 0,
                         GD_MSG_SNAPSHOT_OP_FAILED,
