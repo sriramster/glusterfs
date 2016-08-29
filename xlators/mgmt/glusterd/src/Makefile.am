@@ -22,7 +22,7 @@ glusterd_la_SOURCES = glusterd.c glusterd-handler.c glusterd-sm.c \
 glusterd_la_LIBADD = $(top_builddir)/libglusterfs/src/libglusterfs.la \
 		     $(top_builddir)/rpc/xdr/src/libgfxdr.la \
 		     $(top_builddir)/rpc/rpc-lib/src/libgfrpc.la \
-                     $(top_builddir)/xlators/mgmt/glusterd/plugins/snapshot/src/libgsnaps.la \
+                     $(top_builddir)/xlators/mgmt/glusterd/plugins/snapshot/src/libgsnapshot.la \
 		     $(XML_LIBS) -lcrypto $(URCU_LIBS) $(URCU_CDS_LIBS)
 if ENABLE_BD_XLATOR
 glusterd_la_LIBADD += -llvm2app
@@ -54,7 +54,7 @@ AM_CPPFLAGS = $(GF_CPPFLAGS) -I$(top_srcdir)/libglusterfs/src \
 	-DSYNCDAEMON_COMPILE=$(SYNCDAEMON_COMPILE) $(XML_CPPFLAGS)
 
 
-AM_CFLAGS = -Wall $(GF_CFLAGS) $(URCU_CFLAGS) $(URCU_CDS_CFLAGS)
+AM_CFLAGS = -Wall $(GF_CFLAGS) $(URCU_CFLAGS) $(URCU_CDS_CFLAGS) -Wl,-rpath=$(libdir)
 
 AM_LDFLAGS = -L$(xlatordir) $(URCU_LIBS) $(URCU_CDS_LIBS)
 
