@@ -33,8 +33,7 @@
 #include "run.h"
 #include "syscall.h"
 
-
-#include "lvm_snaps.h"
+#include "lvm-snapshot.h"
 #include "lvm-defaults.h"
 
 /* This function is called to get the device path of the snap lvm. Usually

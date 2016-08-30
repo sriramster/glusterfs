@@ -1,11 +1,11 @@
 lib_LTLIBRARIES = libgsnapshot.la
 
-libgsnapshot_la_SOURCES = lvm_snaps.c
+libgsnapshot_la_SOURCES = lvm-snapshot.c
 
 libgsnapshot_la_LIBADD = $(top_builddir)/libglusterfs/src/libglusterfs.la
 libgsnapshot_la_LDFLAGS = -version-info $(LIBGSNAPS_LT_VERSION) $(GF_LDFLAGS)
 
-libgsnapshot_la_HEADERS = lvm_snaps.h
+libgsnapshot_la_HEADERS = lvm-snapshot.h
 
 libgsnapshot_ladir = $(includedir)/glusterfs/rpc
 
