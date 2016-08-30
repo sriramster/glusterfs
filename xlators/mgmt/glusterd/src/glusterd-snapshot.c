@@ -61,7 +61,7 @@
 #include "xdr-generic.h"
 
 #include "lvm-defaults.h"
-#include "lvm_snaps.h"
+#include "lvm-snapshot.h"
 
 char snap_mount_dir[PATH_MAX];
 struct snap_create_args_ {
@@ -2120,7 +2120,7 @@ glusterd_snap_create_clone_common_prevalidate (dict_t *rsp_dict, int flags,
                      }
                 }
 
-                device = glusterd_build_snap_device_path (device,
+                device = lvm_build_snap_device_path (device,
                                                   snap_volname,
                                                   brick_count);
                 if (!device) {
@@ -2742,7 +2742,7 @@ glusterd_do_lvm_snapshot_remove (glusterd_volinfo_t *snap_vol,
                 goto out;
         }
 
-	ret = _glusterd_lvm_snapshot_remove(this->name,brickinfo->path, 
+	ret = lvm_snapshot_remove(this->name,brickinfo->path, 
 					    snap_device);
 
         if (ret) {
@@ -4606,7 +4606,7 @@ glusterd_snap_brick_create (glusterd_volinfo_t *snap_volinfo,
                         MS_MGC_VAL, "nouuid");
            But for now, mounting using runner apis.
         */
-        ret = glusterd_mount_lvm_snapshot (snap_brick_mount_path,
+        ret = lvm_mount_snapshot (snap_brick_mount_path,
 					   brickinfo->device_path,
 					   brickinfo->mnt_opts,
 					   brickinfo->fstype);
@@ -4968,7 +4968,7 @@ glusterd_take_brick_snapshot (dict_t *dict, glusterd_volinfo_t *snap_vol,
         }
 	else {
 
-	     ret = glusterd_take_lvm_snapshot (brickinfo->device_path, 
+	     ret = lvm_take_snapshot (brickinfo->device_path, 
 					       origin_brick_path, 
 					       origin_device);
 	}
@@ -7235,7 +7235,7 @@ glusterd_get_single_brick_status (char **op_errstr, dict_t *rsp_dict,
                 goto out;
         }
 
-        ret = glusterd_get_brick_lvm_details (rsp_dict, 
+        ret = lvm_get_brick_details (rsp_dict, 
 					      snap_volinfo->volname,
                                               device, key);
         if (ret) {
@@ -8819,7 +8819,7 @@ out:
 */
 
 static gf_boolean_t
-glusterd_is_lvm_cmd_available (char *lvm_cmd)
+glusterd_is_snapshot_cmd_available (char *lvm_cmd)
 {
         int32_t     ret  = 0;
         struct stat buf  = {0,};
@@ -8944,7 +8944,7 @@ glusterd_handle_snapshot_fn (rpcsvc_request_t *req)
                 goto out;
         }
 
-        if (!glusterd_is_lvm_cmd_available (LVM_CREATE)) {
+        if (!glusterd_is_snapshot_cmd_available (LVM_CREATE)) {
                 snprintf (err_str, sizeof (err_str), "LVM commands not found,"
                           " snapshot functionality is disabled");
                 gf_msg (this->name, GF_LOG_ERROR, 0,

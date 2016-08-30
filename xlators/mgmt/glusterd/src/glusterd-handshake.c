@@ -28,7 +28,7 @@
 #include "protocol-common.h"
 #include "rpcsvc.h"
 #include "rpc-common-xdr.h"
-#include "lvm_snaps.h"
+#include "lvm-snapshot.h"
 
 extern struct rpc_clnt_program gd_peer_prog;
 extern struct rpc_clnt_program gd_mgmt_prog;

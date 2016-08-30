@@ -8,8 +8,6 @@
 #include "glusterd-messages.h"
 #include "glusterd-errno.h"
 
-#define GF_LINUX_HOST_OS 1
-
 #if defined(GF_LINUX_HOST_OS)
 #include <mntent.h>
 #else
@@ -35,7 +33,6 @@
 
 #include "lvm-snapshot.h"
 #include "lvm-defaults.h"
-
 /* This function is called to get the device path of the snap lvm. Usually
    if /dev/mapper/<group-name>-<lvm-name> is the device for the lvm,
    then the snap device will be /dev/<group-name>/<snapname>.
@@ -43,7 +40,7 @@
 */
 
 char *
-glusterd_build_snap_device_path (char *device, char *snapname,
+lvm_build_snap_device_path (char *device, char *snapname,
                                  int32_t brickcount)
 {
         char        snap[PATH_MAX]      = "";
@@ -117,7 +114,7 @@ out:
    for glusterd
 */
 int32_t
-glusterd_take_lvm_snapshot (char *device_path,
+lvm_take_snapshot (char *device_path,
                             char *origin_brick_path, 
 			    char *origin_device)
 {
@@ -188,7 +185,7 @@ out:
 }
 
 int
-glusterd_get_brick_lvm_details (dict_t *rsp_dict,char *volname,
+lvm_get_brick_details (dict_t *rsp_dict,char *volname,
                                 char *device,char *key_prefix)
 {
 
@@ -330,7 +327,7 @@ out:
 }
 
 int32_t 
-_glusterd_lvm_snapshot_remove(char *brick_path, char *hostname, const char *snap_device)
+lvm_snapshot_remove(char *brick_path, char *hostname, const char *snap_device)
 {
      
      runner_t                runner            = {0,};
@@ -393,7 +390,7 @@ out:
 }
 
 int32_t
-glusterd_mount_lvm_snapshot (char *brick_mount_path, 
+lvm_mount_snapshot (char *brick_mount_path, 
 			     char *device_path, 
 			     char *_mnt_opts, 
 			     char *fstype)
